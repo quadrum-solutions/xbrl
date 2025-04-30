@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageId>Quadrum$(AssemblyName)</PackageId>
+		<Title>Quadrum $(AssemblyName)</Title>
 		<Version>3.4.2</Version>
 	</PropertyGroup>
 

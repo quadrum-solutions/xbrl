@@ -39,23 +39,43 @@ namespace Diwen.Xbrl.Csv.Taxonomy
         private Dictionary<string, TableDefinition> tableDefinitions;
 
         /// <summary/>
-        public Dictionary<string, TableDefinition> TableDefinitions()
+        public Dictionary<string, TableDefinition> TableDefinitions(string path = "")
         {
             if (tableDefinitions == null)
             {
                 tableDefinitions = [];
-                var modfolder = Path.GetDirectoryName(DocumentInfo.Taxonomy.First().Replace("http://", ""));
+                var modfolder = Path.GetDirectoryName(DocumentInfo.Taxonomy.First().Replace("http://", path));
 
                 foreach (var moduleTable in DocumentInfo.Extends)
                 {
                     var tabfile = Path.GetFullPath(Path.Combine(modfolder, moduleTable));
                     if (File.Exists(tabfile))
-                        using (var stream = new FileStream(tabfile, FileMode.Open, FileAccess.Read))
+                    {
+                        var tablecode = Path.GetFileNameWithoutExtension(tabfile);
+
+                        using var stream = new FileStream(tabfile, FileMode.Open, FileAccess.Read);
+                        var jsonTable = JsonSerializer.Deserialize<TableDefinition>(stream);
+
+                        using var streamDora = new FileStream(tabfile, FileMode.Open, FileAccess.Read);
+                        var jsonTableDora = JsonSerializer.Deserialize<DoraTableDefinition>(streamDora);
+
+                        if (jsonTable.TableTemplates?.FirstOrDefault().Value?.Columns?.Datapoint == null)
                         {
-                            var jsonTable = JsonSerializer.Deserialize<TableDefinition>(stream);
-                            var tablecode = Path.GetFileNameWithoutExtension(tabfile);
-                            tableDefinitions.Add(tablecode, jsonTable);
+                            jsonTable.TableTemplates.First().Value.Columns.Datapoint = new Datapoint
+                            {
+                                PropertyGroups = jsonTableDora.TableTemplates.First().Value.PropertyGroups
+                            };
                         }
+                        else
+                        {
+                            foreach (var dp in jsonTableDora.Datapoints)
+                            {
+                                jsonTable.TableTemplates.First().Value.Columns.Datapoint.PropertyGroups.Add(dp.Key, dp.Value);
+                            }
+                        }
+
+                        tableDefinitions.Add(tablecode, jsonTable);
+                    }
                 }
             }
 

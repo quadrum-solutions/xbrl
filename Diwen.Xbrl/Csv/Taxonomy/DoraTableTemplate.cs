@@ -1,14 +1,14 @@
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 namespace Diwen.Xbrl.Csv.Taxonomy
 {
-    using System.Collections.Generic;
-    using System.Text.Json.Serialization;
-
-        /// <summary/>    
-    public class TableTemplate
+    /// <summary/>    
+    public class DoraTableTemplate
     {
         /// <summary/>
         [JsonPropertyName("columns")]
-        public Columns Columns { get; set; }
+        public Dictionary<string, PropertyGroup> PropertyGroups { get; set; }
         /// <summary/>
         [JsonPropertyName("dimensions")]
         public Dictionary<string, string> Dimensions { get; set; }

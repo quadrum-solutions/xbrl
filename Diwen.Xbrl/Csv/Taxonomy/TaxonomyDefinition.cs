@@ -42,7 +42,7 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                             Version = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText,
                             Name = xmlElement.Name,
                             FromDate = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:fromDate")?.InnerText,
-                            EntryPoint = file.Replace(path, "http://"),
+                            EntryPoint = file.Replace(path, "http://").Replace(@"\", "/"),
                         });
                     }
                 }

@@ -4,7 +4,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageId>Quadrum$(AssemblyName)</PackageId>
 		<Title>Quadrum $(AssemblyName)</Title>
-		<Version>3.5.7</Version>
+		<Version>3.5.17</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>

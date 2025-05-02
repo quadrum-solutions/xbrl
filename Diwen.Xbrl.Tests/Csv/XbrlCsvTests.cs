@@ -176,6 +176,36 @@ namespace Diwen.Xbrl.Tests.Csv
         }
 
         [Theory]
+        [InlineData("")]
+        public void LoadDimension(string xmlInPath)
+        {
+            var dimensions = DimensionDefinition.DimensionDefinitions(xmlInPath);
+
+            Assert.True(dimensions.ContainsKey("eba_dim:ERI"));
+            Assert.Equal("eba_LE", dimensions["eba_dim:ERI"].Domain);
+            Assert.True(dimensions.ContainsKey("eba_dim_4.0:qLES"));
+            Assert.Equal("eba_LE", dimensions["eba_dim_4.0:qLES"].Domain);
+            Assert.Equal("Lei code of the entity making use", dimensions["eba_dim_4.0:qLES"].Description);
+            Assert.True(dimensions.ContainsKey("eba_dim_4.0:qAOV"));
+            Assert.Equal("eba_PC", dimensions["eba_dim_4.0:qAOV"].Domain);
+            Assert.Equal("NPE factor", dimensions["eba_dim_4.0:qAOV"].Description);
+            Assert.Equal("x0", dimensions["eba_dim_4.0:qAOV"].DefaultValue);
+        }
+
+        [Theory]
+        [InlineData("")]
+        public void LoadDomains(string xmlInPath)
+        {
+            var domains = DomainDefinition.DomainDefinitions(xmlInPath);
+
+            Assert.True(domains.ContainsKey("eba_LE"));
+            Assert.True(domains["eba_LE"].IsType);
+            Assert.True(domains.ContainsKey("eba_TI"));
+            Assert.False(domains["eba_TI"].IsType);
+            Assert.True(domains["eba_TI"].Members.ContainsKey("eba_x1"));
+        }
+
+        [Theory]
         [InlineData("EBA32_TypedDomain.csv")]
         public void ReadTypedDomainInfoTest(string path)
         => ReadTypedDomainInfo(path);

@@ -9,5 +9,8 @@ namespace Diwen.Xbrl.Csv.Taxonomy
         /// <summary/>
         [JsonPropertyName("columns")]
         public Dictionary<string, PropertyGroup> PropertyGroups { get; set; }
+        /// <summary/>
+        [JsonPropertyName("dimensions")]
+        public Dictionary<string, string> Dimensions { get; set; }
     }
 }

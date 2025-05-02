@@ -206,6 +206,16 @@ namespace Diwen.Xbrl.Tests.Csv
         }
 
         [Theory]
+        [InlineData("C:\\Users\\sebas\\Downloads\\xbrl\\")]
+        public void LoadTaxonomies(string xmlInPath)
+        {
+            var taxonomies = TaxonomyDefinition.TaxonomieDefinitions(xmlInPath);
+
+            Assert.True(taxonomies.ContainsKey("eba_IRRBB"));
+            Assert.Equal("Interest Rate Risk in the Banking Book", taxonomies["eba_IRRBB"].Description);
+        }
+
+        [Theory]
         [InlineData("EBA32_TypedDomain.csv")]
         public void ReadTypedDomainInfoTest(string path)
         => ReadTypedDomainInfo(path);

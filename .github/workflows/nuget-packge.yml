@@ -29,7 +29,7 @@ jobs:
         run: dotnet build --no-restore --configuration Release
         
       - name: Pack
-        run: dotnet pack --configuration Release /p:Version=${VERSION} --no-build --output .
+        run: dotnet pack --configuration Release --no-build --output .
 
       - name: Push package to NuGet
         env:
@@ -37,4 +37,3 @@ jobs:
         run: |
           dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
           echo "Package pushed to NuGet successfully."
-          

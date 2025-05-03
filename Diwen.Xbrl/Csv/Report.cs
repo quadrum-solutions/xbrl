@@ -216,9 +216,9 @@
             var reportFiles = ReadPackage(packagePath);
             var packagename = Path.GetFileNameWithoutExtension(packagePath);
 
-            report.Entrypoint = ReadEntryPoint(reportFiles.Single(f => f.Key.EndsWith("reports/report.json")).Value);
-            report.Parameters = ReadParameters(reportFiles.Single(f => f.Key.EndsWith("reports/parameters.csv")).Value);
-            report.FilingIndicators = ReadFilingIndicators(reportFiles.Single(f => f.Key.EndsWith("reports/FilingIndicators.csv")).Value);
+            report.Entrypoint = ReadEntryPoint(reportFiles.Single(f => f.Key.EndsWith("reports/report.json") || f.Key.EndsWith(@"reports\report.json")).Value);
+            report.Parameters = ReadParameters(reportFiles.Single(f => f.Key.EndsWith("reports/parameters.csv") || f.Key.EndsWith(@"reports\parameters.csv")).Value);
+            report.FilingIndicators = ReadFilingIndicators(reportFiles.Single(f => f.Key.EndsWith("reports/FilingIndicators.csv") || f.Key.EndsWith(@"reports\FilingIndicators.csv")).Value);
             foreach (var template in report.FilingIndicators.Where(fi => fi.Value).Select(fi => fi.Key))
                 foreach (var tablefile in reportFiles.Where(f => Path.GetFileNameWithoutExtension(f.Key).StartsWith(template, StringComparison.OrdinalIgnoreCase)))
                     report.Data.AddRange(ReadTableData(Path.GetFileNameWithoutExtension(tablefile.Key), tablefile.Value));

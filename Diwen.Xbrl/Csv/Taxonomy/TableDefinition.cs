@@ -43,6 +43,7 @@ namespace Diwen.Xbrl.Csv.Taxonomy
             {
                 datapointsByMetric =
                     Datapoints.
+                    Where(pg => pg.Value?.Dimensions?.ContainsKey("concept") ?? false).
                     GroupBy(pg => pg.Value.Dimensions["concept"]).
                     ToDictionary(
                         g => g.Key,

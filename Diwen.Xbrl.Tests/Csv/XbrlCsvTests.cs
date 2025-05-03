@@ -110,14 +110,14 @@ namespace Diwen.Xbrl.Tests.Csv
             var metafolder = "META-INF";
             var reportfolder = "reports";
 
-            Assert.True(reportFiles.ContainsKey(Path.Combine(metafolder, "reports.json")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "report.json")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "parameters.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "FilingIndicators.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "S_00.01.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "C_105.02.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "C_105.03.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "C_113.00.csv")));
+            Assert.True(reportFiles.ContainsKey($"{metafolder}/reports.json"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/report.json"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/parameters.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/FilingIndicators.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/S_00.01.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/C_105.02.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/C_105.03.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/C_113.00.csv"));
         }
 
         [Theory]
@@ -203,16 +203,6 @@ namespace Diwen.Xbrl.Tests.Csv
             Assert.True(domains.ContainsKey("eba_TI"));
             Assert.False(domains["eba_TI"].IsType);
             Assert.True(domains["eba_TI"].Members.ContainsKey("eba_x1"));
-        }
-
-        [Theory]
-        [InlineData("C:\\Users\\sebas\\Downloads\\xbrl\\")]
-        public void LoadTaxonomies(string xmlInPath)
-        {
-            var taxonomies = TaxonomyDefinition.TaxonomieDefinitions(xmlInPath);
-
-            Assert.True(taxonomies.ContainsKey("eba_IRRBB"));
-            Assert.Equal("Interest Rate Risk in the Banking Book", taxonomies["eba_IRRBB"].Description);
         }
 
         [Theory]

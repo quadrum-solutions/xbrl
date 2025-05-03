@@ -6,7 +6,8 @@ on:
   workflow_dispatch: # Allow to manually trigger
 
 jobs:
-  push_and_build:
+  publish:
+    name: Publish NuGet package
     runs-on: ubuntu-latest
 
     permissions:

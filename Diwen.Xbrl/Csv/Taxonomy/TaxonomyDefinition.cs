@@ -42,9 +42,10 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                         var json = JsonSerializer.Deserialize<ModuleDefinition>(stream);
 
                         var ebaDoc = json.DocumentInfo.EbaDocumentation;
-                        Taxonomies[xmlElement.Id].Taxonomies.TryAdd(xmlElement.Name, new Taxonomy()
+                        var version = ebaDoc.ModuleVersion ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText;
+                        Taxonomies[xmlElement.Id].Taxonomies.TryAdd($"{xmlElement.Name}-{version}", new Taxonomy()
                         {
-                            Version = ebaDoc.ModuleVersion ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText,
+                            Version = version,
                             Name = xmlElement.Name,
                             FromDate = ebaDoc.FromReferenceDate ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:fromDate")?.InnerText,
                             ToDate = ebaDoc.ToReferenceDate ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:toDateDate")?.InnerText,

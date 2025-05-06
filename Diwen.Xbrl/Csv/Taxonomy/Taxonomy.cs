@@ -10,6 +10,8 @@
         /// <summary/>
         public string FromDate { get; set; } = string.Empty;
         /// <summary/>
+        public string ToDate { get; set; } = string.Empty;
+        /// <summary/>
         public string EntryPoint { get; set; } = string.Empty;
 
     }

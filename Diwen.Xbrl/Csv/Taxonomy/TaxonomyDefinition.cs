@@ -4,7 +4,7 @@ using System.Xml.Schema;
 using System.Xml;
 using System.Linq;
 using System;
-using System.Xml.Linq;
+using System.Text.Json;
 
 namespace Diwen.Xbrl.Csv.Taxonomy
 {
@@ -37,11 +37,17 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                             Name = xmlElement.Name,
                             Taxonomies = [],
                         });
+
+                        var stream = new FileStream(file.Replace(".xsd", ".json"), FileMode.Open, FileAccess.Read);
+                        var json = JsonSerializer.Deserialize<ModuleDefinition>(stream);
+
+                        var ebaDoc = json.DocumentInfo.EbaDocumentation;
                         Taxonomies[xmlElement.Id].Taxonomies.TryAdd(xmlElement.Name, new Taxonomy()
                         {
-                            Version = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText,
+                            Version = ebaDoc.ModuleVersion ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText,
                             Name = xmlElement.Name,
-                            FromDate = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:fromDate")?.InnerText,
+                            FromDate = ebaDoc.FromReferenceDate ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:fromDate")?.InnerText,
+                            ToDate = ebaDoc.ToReferenceDate ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:toDateDate")?.InnerText,
                             EntryPoint = file.Replace(path, "http://").Replace(@"\", "/"),
                         });
                     }

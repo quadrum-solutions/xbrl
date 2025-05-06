@@ -206,6 +206,15 @@ namespace Diwen.Xbrl.Tests.Csv
         }
 
         [Theory]
+        [InlineData("./")]
+        public void LoadTaxonomies(string xmlInPath)
+        {
+            var taxonomies = TaxonomyDefinition.TaxonomieDefinitions(xmlInPath);
+
+            Assert.True(true);
+        }
+
+        [Theory]
         [InlineData("EBA32_TypedDomain.csv")]
         public void ReadTypedDomainInfoTest(string path)
         => ReadTypedDomainInfo(path);

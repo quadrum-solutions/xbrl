@@ -24,6 +24,20 @@ namespace Diwen.Xbrl.Csv.Taxonomy
 
             foreach (var file in files)
             {
+                XmlReaderSettings settings = new XmlReaderSettings();
+                var headerVersion = "";
+                using (XmlReader readerHeader = XmlReader.Create(file, settings))
+                {
+                    while (readerHeader.Read())
+                    {
+                        if (readerHeader.NodeType == XmlNodeType.ProcessingInstruction && readerHeader.Name.Equals("taxonomy-version"))
+                            headerVersion = readerHeader.Value;
+
+                        if (readerHeader.NodeType == XmlNodeType.Element && readerHeader.LocalName == "schema")
+                            break;
+                    }
+                }
+
                 var reader = new StreamReader(file);
                 XmlSchema schema = XmlSchema.Read(reader, ValidationCallback);
 
@@ -31,6 +45,10 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                 {
                     if (element is XmlSchemaElement xmlElement)
                     {
+                        if (xmlElement.Id.Equals("eba_COREP_ALM_Ind"))
+                        {
+                            var test = "";
+                        }
                         Taxonomies.TryAdd(xmlElement.Id, new TaxonomyCategory()
                         {
                             Code = xmlElement.Id,
@@ -38,19 +56,35 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                             Taxonomies = [],
                         });
 
-                        var stream = new FileStream(file.Replace(".xsd", ".json"), FileMode.Open, FileAccess.Read);
-                        var json = JsonSerializer.Deserialize<ModuleDefinition>(stream);
+                        var jsonFile = file.Replace(".xsd", ".json");
+                        var entrypoint = file.Replace(path, "http://").Replace(@"\", "/");
 
-                        var ebaDoc = json.DocumentInfo.EbaDocumentation;
-                        var version = ebaDoc.ModuleVersion ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText;
-                        Taxonomies[xmlElement.Id].Taxonomies.TryAdd($"{xmlElement.Name}-{version}", new Taxonomy()
+                        if (File.Exists(jsonFile))
                         {
-                            Version = version,
-                            Name = xmlElement.Name,
-                            FromDate = ebaDoc.FromReferenceDate ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:fromDate")?.InnerText,
-                            ToDate = ebaDoc.ToReferenceDate ?? xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:toDateDate")?.InnerText,
-                            EntryPoint = file.Replace(path, "http://").Replace(@"\", "/"),
-                        });
+                            var stream = new FileStream(jsonFile, FileMode.Open, FileAccess.Read);
+                            var json = JsonSerializer.Deserialize<ModuleDefinition>(stream);
+                            var ebaDoc = json.DocumentInfo.EbaDocumentation;
+                            Taxonomies[xmlElement.Id].Taxonomies.TryAdd($"{xmlElement.Name}-{ebaDoc.ModuleVersion}", new Taxonomy()
+                            {
+                                Version = ebaDoc.ModuleVersion,
+                                Name = xmlElement.Name,
+                                FromDate = ebaDoc.FromReferenceDate,
+                                ToDate = ebaDoc.ToReferenceDate,
+                                EntryPoint = entrypoint,
+                            });
+                        }
+                        else
+                        {
+                            var version = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:version")?.InnerText ?? headerVersion;
+                            Taxonomies[xmlElement.Id].Taxonomies.TryAdd($"{xmlElement.Name}-{version}", new Taxonomy()
+                            {
+                                Version = version,
+                                Name = xmlElement.Name,
+                                FromDate = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:fromDate")?.InnerText,
+                                ToDate = xmlElement.UnhandledAttributes.FirstOrDefault(x => x.Name == "model:toDateDate")?.InnerText,
+                                EntryPoint = entrypoint,
+                            });
+                        }
                     }
                 }
 

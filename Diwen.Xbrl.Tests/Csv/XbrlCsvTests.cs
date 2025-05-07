@@ -206,12 +206,17 @@ namespace Diwen.Xbrl.Tests.Csv
         }
 
         [Theory]
-        [InlineData("./")]
+        //[InlineData("./")]
+        [InlineData("C:\\Users\\sebas\\Downloads\\xbrl\\")]
         public void LoadTaxonomies(string xmlInPath)
         {
-            var taxonomies = TaxonomyDefinition.TaxonomieDefinitions(xmlInPath);
+            var start = DateTime.Now;
 
-            Assert.True(true);
+            var taxonomies = TaxonomyDefinition.TaxonomieDefinitions(xmlInPath);
+            Assert.True(taxonomies.Count != 0);
+
+            var time = DateTime.Now - start;
+            var test = "";
         }
 
         [Theory]

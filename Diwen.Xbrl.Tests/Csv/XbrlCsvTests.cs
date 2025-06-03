@@ -110,14 +110,14 @@ namespace Diwen.Xbrl.Tests.Csv
             var metafolder = "META-INF";
             var reportfolder = "reports";
 
-            Assert.True(reportFiles.ContainsKey(Path.Combine(metafolder, "reports.json")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "report.json")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "parameters.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "FilingIndicators.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "S_00.01.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "C_105.02.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "C_105.03.csv")));
-            Assert.True(reportFiles.ContainsKey(Path.Combine(reportfolder, "C_113.00.csv")));
+            Assert.True(reportFiles.ContainsKey($"{metafolder}/reports.json"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/report.json"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/parameters.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/FilingIndicators.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/S_00.01.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/C_105.02.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/C_105.03.csv"));
+            Assert.True(reportFiles.ContainsKey($"{reportfolder}/C_113.00.csv"));
         }
 
         [Theory]
@@ -173,6 +173,50 @@ namespace Diwen.Xbrl.Tests.Csv
                 File.WriteAllLines(Path.ChangeExtension(Path.GetFileName(xmlOutPath), ".report"), result.Messages);
 
             Assert.True(result.Result, string.Join(Environment.NewLine, result.Messages));
+        }
+
+        [Theory]
+        [InlineData("")]
+        public void LoadDimension(string xmlInPath)
+        {
+            var dimensions = DimensionDefinition.DimensionDefinitions(xmlInPath);
+
+            Assert.True(dimensions.ContainsKey("eba_dim:ERI"));
+            Assert.Equal("eba_LE", dimensions["eba_dim:ERI"].Domain);
+            Assert.True(dimensions.ContainsKey("eba_dim_4.0:qLES"));
+            Assert.Equal("eba_LE", dimensions["eba_dim_4.0:qLES"].Domain);
+            Assert.Equal("Lei code of the entity making use", dimensions["eba_dim_4.0:qLES"].Description);
+            Assert.True(dimensions.ContainsKey("eba_dim_4.0:qAOV"));
+            Assert.Equal("eba_PC", dimensions["eba_dim_4.0:qAOV"].Domain);
+            Assert.Equal("NPE factor", dimensions["eba_dim_4.0:qAOV"].Description);
+            Assert.Equal("x0", dimensions["eba_dim_4.0:qAOV"].DefaultValue);
+        }
+
+        [Theory]
+        [InlineData("")]
+        public void LoadDomains(string xmlInPath)
+        {
+            var domains = DomainDefinition.DomainDefinitions(xmlInPath);
+
+            Assert.True(domains.ContainsKey("eba_LE"));
+            Assert.True(domains["eba_LE"].IsType);
+            Assert.True(domains.ContainsKey("eba_TI"));
+            Assert.False(domains["eba_TI"].IsType);
+            Assert.True(domains["eba_TI"].Members.ContainsKey("eba_x1"));
+        }
+
+        [Theory]
+        //[InlineData("./")]
+        [InlineData("C:\\Users\\sebas\\Downloads\\xbrl\\")]
+        public void LoadTaxonomies(string xmlInPath)
+        {
+            var start = DateTime.Now;
+
+            var taxonomies = TaxonomyDefinition.TaxonomieDefinitions(xmlInPath);
+            Assert.True(taxonomies.Count != 0);
+
+            var time = DateTime.Now - start;
+            var test = "";
         }
 
         [Theory]

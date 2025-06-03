@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diwen.Xbrl", "Diwen.Xbrl\Diwen.Xbrl.csproj", "{1ED43D9C-D386-29B7-15D2-290BAE8464A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diwen.Xbrl.Tests", "Diwen.Xbrl.Tests\Diwen.Xbrl.Tests.csproj", "{99961958-5677-6862-9A43-CFD1E20C8DBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1ED43D9C-D386-29B7-15D2-290BAE8464A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED43D9C-D386-29B7-15D2-290BAE8464A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED43D9C-D386-29B7-15D2-290BAE8464A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED43D9C-D386-29B7-15D2-290BAE8464A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99961958-5677-6862-9A43-CFD1E20C8DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99961958-5677-6862-9A43-CFD1E20C8DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99961958-5677-6862-9A43-CFD1E20C8DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99961958-5677-6862-9A43-CFD1E20C8DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F4F2123-EAED-49A5-B9E3-7DA4EBC7DEA5}
+	EndGlobalSection
+EndGlobal

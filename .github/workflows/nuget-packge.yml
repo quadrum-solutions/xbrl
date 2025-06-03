@@ -1,0 +1,39 @@
+name: Nuget package CI
+
+on:
+  push:
+    tags: ["v[0-9].[0-9]+.[0-9]+"]
+  workflow_dispatch: # Allow to manually trigger
+
+jobs:
+  push_and_build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4.3.1
+        with:
+          dotnet-version: 8.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+        
+      - name: Pack
+        run: dotnet pack --configuration Release --no-build --output .
+
+      - name: Push package to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+          echo "Package pushed to NuGet successfully."

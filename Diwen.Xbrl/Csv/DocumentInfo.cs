@@ -37,5 +37,9 @@ namespace Diwen.Xbrl.Csv
         /// <summary/>
         [JsonPropertyName("taxonomy")]
         public List<string> Taxonomy { get; set; }
+
+        /// <summary/>
+        [JsonPropertyName("eba:documentation")]
+        public EbaDocumentation EbaDocumentation { get; set; }
     }
 }

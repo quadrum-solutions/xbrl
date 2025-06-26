@@ -42,6 +42,10 @@ namespace Diwen.Xbrl.Csv.Taxonomy
         /// <summary/>
         public Dictionary<string, TableDefinition> TableDefinitions(string path = "")
         {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
             if (tableDefinitions == null)
             {
                 tableDefinitions = [];
@@ -55,10 +59,10 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                         var tablecode = Path.GetFileNameWithoutExtension(tabfile);
 
                         using var stream = new FileStream(tabfile, FileMode.Open, FileAccess.Read);
-                        var jsonTable = JsonSerializer.Deserialize<TableDefinition>(stream);
+                        var jsonTable = JsonSerializer.Deserialize<TableDefinition>(stream, options);
 
                         using var streamDora = new FileStream(tabfile, FileMode.Open, FileAccess.Read);
-                        var jsonTableDora = JsonSerializer.Deserialize<DoraTableDefinition>(streamDora);
+                        var jsonTableDora = JsonSerializer.Deserialize<DoraTableDefinition>(streamDora, options);
 
                         if (jsonTable.TableTemplates?.FirstOrDefault().Value?.Columns?.Datapoint == null)
                         {

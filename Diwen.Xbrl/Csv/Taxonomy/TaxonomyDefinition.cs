@@ -45,10 +45,6 @@ namespace Diwen.Xbrl.Csv.Taxonomy
                 {
                     if (element is XmlSchemaElement xmlElement)
                     {
-                        if (xmlElement.Id.Equals("eba_COREP_ALM_Ind"))
-                        {
-                            var test = "";
-                        }
                         Taxonomies.TryAdd(xmlElement.Id, new TaxonomyCategory()
                         {
                             Code = xmlElement.Id,

@@ -216,6 +216,21 @@ namespace Diwen.Xbrl.Tests.Csv
             Assert.True(taxonomies.Count != 0);
 
             var time = DateTime.Now - start;
+        }
+
+        [Theory]
+        [InlineData("C:\\Users\\sebas\\Downloads\\xbrl\\")]
+        public void LoadTaxonomyPropertyGroup(string xmlInPath)
+        {
+            var start = DateTime.Now;
+
+            var entrypoint = "http://www.eba.europa.eu/eu/fr/xbrl/crr/fws/corep/4.0/mod/corep_of.xsd";
+            var taxonomyEntrypoint = Path.ChangeExtension(entrypoint.Replace("http://", xmlInPath), "json");
+            var taxonomyModule = ModuleDefinition.FromFile(taxonomyEntrypoint);
+            var taxonomyTables = taxonomyModule.TableDefinitions(xmlInPath);
+            var pg = taxonomyTables.First(x => x.Key.Equals("c_01.00")).Value.TableTemplates.First().Value.Columns.Datapoint.PropertyGroups.Values;
+
+            var time = DateTime.Now - start;
             var test = "";
         }
 

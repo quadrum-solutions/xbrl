@@ -228,7 +228,6 @@ namespace Diwen.Xbrl.Tests.Csv
             var taxonomyEntrypoint = Path.ChangeExtension(entrypoint.Replace("http://", xmlInPath), "json");
             var taxonomyModule = ModuleDefinition.FromFile(taxonomyEntrypoint);
             var taxonomyTables = taxonomyModule.TableDefinitions(xmlInPath);
-            var pg = taxonomyTables.First(x => x.Key.Equals("c_01.00")).Value.TableTemplates.First().Value.Columns.Datapoint.PropertyGroups.Values;
 
             var time = DateTime.Now - start;
             var test = "";
